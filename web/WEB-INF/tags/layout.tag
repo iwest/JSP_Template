@@ -1,6 +1,7 @@
 <%@tag description="Layout template for a page with header, body, and footer" pageEncoding="utf-8"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>${title}</title>
+    <title>${pageScope.title}</title>
 
     <link href="<c:url value="/res/css/foundation.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/res/css/normalize.css"/>" rel="stylesheet">
@@ -36,23 +37,7 @@
     <c:if test="${not empty requestScope.alerts}">
         <section>
             <c:forEach var="alert" items="${requestScope.alerts}">
-                <div class="row">
-                    <div class="column">
-                        <div class="${pageScope.alert.type} callout margin-bottom-0" data-closable>
-                            <p class="margin-bottom-0">${pageScope.alert.message}</p>
-                            <!--
-                                Button's onclick is a temporary solution to buggy Foundation js
-                                Note the nonfunctional close button on
-                                    http://foundation.zurb.com/sites/docs/close-button.html
-                            -->
-                            <button
-                                    onclick="$(this).parent().remove()"
-                                    class="close-button" aria-label="Dismiss alert" type="button" data-close>
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <t:closableCallout viewAlert="${pageScope.alert}" />
             </c:forEach>
         </section>
     </c:if>
